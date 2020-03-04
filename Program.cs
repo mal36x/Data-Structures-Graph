@@ -7,13 +7,10 @@ namespace Graph
     {
         static void Main(string[] args)
         {
-            int argc;
-            char argv;
+
             //ifstream inputs;
             string[] lines = System.IO.File.ReadAllLines(@"data\input1.txt");
             Graph gptr = null;
-            int num;
-            string v1, v2;
 
             int w;
             Queue<string> visitedq =  new Queue<string>();

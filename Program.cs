@@ -16,8 +16,8 @@ namespace Graph
             string v1, v2;
 
             int w;
-            Queue<string> visitedq;
-            Queue<string> adjq;
+            Queue<string> visitedq =  new Queue<string>();
+            Queue<string> adjq = new Queue<string>();
 
 
             foreach (string line in lines)
@@ -62,16 +62,8 @@ namespace Graph
                     case "d": //Add directed edge to graph object
                         try
                         {
-                            inputs + v1 + v2 + w;
-                            Console.WriteLine("AddEdge(" + v1 + ", " + v2 + ", " + w + ")");
-                            gptr->AddEdge(v1, v2, w);
-
-                        }
-
-                        catch (std::bad_alloc)
-                        {
-                            Console.WriteLine("Error - full: unable to add directed");
-
+                            Console.WriteLine("AddEdge(" + inputs[1] + ", " + inputs[2] + ", " + inputs[3] + ")");
+                            gptr.AddEdge(inputs[1], inputs[2], Convert.ToInt32(inputs[3]));
                         }
                         catch
                         {
@@ -83,16 +75,10 @@ namespace Graph
 
                         try
                         {
-                            inputs + v1 + v2 + w;
-                            Console.WriteLine("AddEdge(" + v1 + ", " + v2 + ", " + w + ")");
-                            gptr->AddEdge(v1, v2, w);
-                            Console.WriteLine("AddEdge(" + v2 + ", " + v1 + ", " + w + ")");
-                            gptr->AddEdge(v2, v1, w);
-
-                        }
-                        catch (std::bad_alloc)
-                        {
-                            Console.WriteLine("Error - full: unable to add directed");
+                            Console.WriteLine("AddEdge(" + inputs[1] + ", " + inputs[2] + ", " + inputs[3] + ")");
+                            gptr.AddEdge(inputs[1], inputs[2], Convert.ToInt32(inputs[3]));
+                            Console.WriteLine("AddEdge(" + inputs[1] + ", " + inputs[2] + ", " + inputs[3] + ")");
+                            gptr.AddEdge(inputs[2], inputs[1], Convert.ToInt32(inputs[3]));
 
                         }
                         catch
@@ -104,14 +90,13 @@ namespace Graph
                     case "?":
                         try
                         {
-                            inputs >> v1;
-                            if (gptr->VertexExist(v1) != null)
+                            if (gptr.VertexExists(inputs[1]))
                             {
-                                Console.WriteLine("VertexExist (" << v1 << ") -- true");
+                                Console.WriteLine("VertexExist (" + inputs[1] + ") -- true");
                             }
                             else
                             {
-                                Console.WriteLine("VertexExist (" << v1 << ") -- false");
+                                Console.WriteLine("VertexExist (" + inputs[1] + ") -- false");
                             }
 
                         }
@@ -123,14 +108,13 @@ namespace Graph
                     case "!": //edge exist
                         try
                         {
-                            inputs >> v1 >> v2;
-                            if (gPtr->EdgeExist(v1, v2) != null)
+                            if (gptr.EdgeExists(inputs[1], inputs[2]))
                             {
-                                Console.WriteLine("EdgeExist (" << v1 << ") -- true");
+                                Console.WriteLine("EdgeExist (" + inputs[1] + "," + inputs[2] + ") -- true");
                             }
                             else
                             {
-                                Console.WriteLine("EdgeExist (" << v1 << ") -- false");
+                                Console.WriteLine("EdgeExist (" + inputs[1] + "," + inputs[2] + ") -- false");
                             }
 
                         }
@@ -143,9 +127,8 @@ namespace Graph
                     case "w":   // WeightIs()
                         try
                         {
-                            inputs >> v1 >> v2;
-                            Console.WriteLine("WeightIs(" << v1 << ", " << v2 << ") -- ");
-                            w = gPtr->WeightIs(v1, v2);
+                            Console.WriteLine("WeightIs(" + inputs[1] + ", " + inputs[2] + ") -- ");
+                            w = gptr.WeightIs(inputs[1], inputs[2]);
                             Console.WriteLine(w);
                         }
                         catch (GraphVertexNotFound)
@@ -165,9 +148,8 @@ namespace Graph
                     case "m":   // MarkVertex()
                         try
                         {
-                            inputs >> v1;
-                            Console.WriteLine("MarkVertex(" << v1 << ") ");
-                            gPtr->MarkVertex(v1);
+                            Console.WriteLine("MarkVertex(" + inputs[1] + ") ");
+                            gptr.MarkVertex(inputs[1]);
                             Console.WriteLine();
                         }
                         catch (GraphVertexNotFound)
@@ -184,7 +166,7 @@ namespace Graph
                         try
                         {
                             Console.WriteLine("ClearMarks() ");
-                            gPtr->ClearMarks();
+                            gptr.ClearMarks();
                             Console.WriteLine();
                         }
                         catch (GraphVertexNotFound)
@@ -200,9 +182,8 @@ namespace Graph
                     case "i":   // IsMarked()
                         try
                         {
-                            inputs >> v1;
-                            Console.WriteLine("IsMarked(" << v1 << ") -- ");
-                            if (gPtr->IsMarked(v1))
+                            Console.WriteLine("IsMarked(" + inputs[1] + ") -- ");
+                            if (gptr.IsMarked(inputs[1]))
                                 Console.WriteLine("true");
                             else
                                 Console.WriteLine("false");
@@ -221,20 +202,19 @@ namespace Graph
                     case "s":   // Perform Depth-First Search
                         try
                         {
-                            inputs >> v1 >> v2;     // Input v1-start and v2-end vertices
 
-                            Console.WriteLine("DFS( " << v1 << ", " << v2 << " ) -- ");
-                            gPtr->DepthFirstSearch(v1, v2, visitedq);
+                            Console.WriteLine("DFS( " + inputs[1] + ", " + inputs[2] + " ) -- ");
+                            gptr.DepthFirstSearch(inputs[1], inputs[2], visitedq);
 
-                            if (visitedq.empty())
+                            if (visitedq.Count == 0)
                                 Console.WriteLine("No path found");
                             else
                             {
                                 Console.WriteLine(" { ");
-                                while (!visitedq.empty())
+                                while (visitedq.Count != 0)
                                 {
-                                    Console.WriteLine(visitedq.front() << " ");
-                                    visitedq.pop();
+                                    Console.WriteLine(visitedq.Peek() + " ");
+                                    visitedq.Dequeue();
                                 }
                                 Console.WriteLine("}");
                             }
@@ -247,27 +227,25 @@ namespace Graph
                         {
                             Console.WriteLine("Error: unanticipated exception in DFS");
                         }
-                        while (!visitedq.empty())
-                            visitedq.pop();
+                        visitedq = new Queue<string>();
                         break;
 
                     case "g":   // GetToVertices
                         try
                         {
-                            inputs >> v1;
 
-                            Console.WriteLine("GetToVertices( " << v1 << " ) -- ");
-                            gPtr->GetToVertices(v1, adjq);
+                            Console.WriteLine("GetToVertices( " + inputs[1] + " ) -- ");
+                            gptr.GetToVertices(inputs[1], adjq);
 
-                            if (adjq.empty())
+                            if (adjq.Count == 0)
                                 Console.WriteLine("No adjacent vertices found");
                             else
                             {
                                 Console.WriteLine(" { ");
-                                while (!adjq.empty())
+                                while (adjq.Count != 0)
                                 {
-                                    Console.WriteLine(adjq.front() << " ");
-                                    adjq.pop();
+                                    Console.WriteLine(adjq.Peek() + " ");
+                                    adjq.Dequeue();
                                 }
                                 Console.WriteLine("}");
                             }
@@ -280,27 +258,26 @@ namespace Graph
                         {
                             Console.WriteLine("Error: unanticipated exception in GetToVertices");
                         }
-                        while (adjq.Count  != 0)
+                        while (adjq.Count != 0)
                             adjq.Dequeue();
                         break;
 
                     case "b":   // Perform Breadth-First Search
                         try
                         {
-                            inputs >> v1 >> v2;     // Input v1-start and v2-end vertices
 
-                            Console.WriteLine("BFS( " << v1 << ", " << v2 << " ) -- ");
-                            gPtr->BreadthFirstSearch(v1, v2, visitedq);
+                            Console.WriteLine("BFS( " + inputs[1] + ", " + inputs[2] + " ) -- ");
+                            gptr.BreadthFirstSearch(inputs[1], inputs[2], visitedq);
 
-                            if (visitedq.empty())
+                            if (adjq.Count == 0)
                                 Console.WriteLine("No path found");
                             else
                             {
                                 Console.WriteLine(" { ");
-                                while (!visitedq.empty())
+                                while (adjq.Count != 0)
                                 {
-                                    Console.WriteLine(visitedq.front() << " ");
-                                    visitedq.pop();
+                                    Console.WriteLine(visitedq.Peek() + " ");
+                                    visitedq.Dequeue();
                                 }
                                 Console.WriteLine("}");
                             }
@@ -313,19 +290,19 @@ namespace Graph
                         {
                             Console.WriteLine("Error: unanticipated exception in BFS");
                         }
-                        while (!visitedq.empty())
-                            visitedq.pop();
+
+                        visitedq = new Queue<string>();
                         break;
 
-                    case 'p':   // Print Graph
-                        gPtr->Print();
+                    case "p":   // Print Graph
+                        gptr.Print();
                         break;
 
-                    case '~':   // Destructor
+                    case "~":   // Destructor
                         try
                         {
-                            delete gPtr;
-                            gPtr = NULL;
+
+                            gptr = null;
                             Console.WriteLine("Destructor()");
                         }
                         catch
@@ -334,13 +311,8 @@ namespace Graph
                         }
                         break;
 
-                    default:
-                        Console.WriteLine("Error - unrecognized operation '" + op + "'");
-                        Console.WriteLine("Terminating now...");
-                        return 1;
-                        break;
+
                 }
-                inputs >> op;   // Attempt to input next command
 
             }
 

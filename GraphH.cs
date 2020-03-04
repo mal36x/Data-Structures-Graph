@@ -1,7 +1,7 @@
 using System;
 
 
-namespace GraphH{
+namespace Graph{
 
     class EdgeNode{
     VertexNode destination;
@@ -38,14 +38,14 @@ namespace GraphH{
     }
 
 
-     VertexNode VertexExists(string v){
+     bool VertexExists(string v){
 
-     return VertexExists;
+     return true;
      }
     
-    EdgeNode EdgeExists(string s, string d){
+    bool EdgeExists(string s, string d){
 
-        return 0;
+        return true;
     }
 
     int WeightIs(string s, string d){

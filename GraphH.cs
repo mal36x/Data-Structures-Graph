@@ -98,7 +98,7 @@ namespace Graph
             foreach(string vertexKey in vertices.Keys){
                 string output = vertexKey+" : ";
                 foreach(string edgeKey in vertices[vertexKey].edges.Keys){
-                    output +=edgeKey +" ";
+                    output +=edgeKey + vertices[vertexKey].edges[edgeKey].Weight +" ";
                 }
                 Console.WriteLine(output);
             }
@@ -107,6 +107,8 @@ namespace Graph
 
         public void DepthFirstSearch(string start, string end, Queue<string> q)
         {
+
+
         }
 
         public void BreadthFirstSearch(string start, string end, Queue<string> q)

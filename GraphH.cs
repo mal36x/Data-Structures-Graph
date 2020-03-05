@@ -107,8 +107,35 @@ namespace Graph
 
         public void DepthFirstSearch(string start, string end, Queue<string> q)
         {
+            DFSRecursion(start,end,q);
+            ClearMarks();
+        }
 
-
+        public bool DFSRecursion(string start, string end, Queue<string> q){
+            bool found = false;
+            if(IsMarked(start)){
+                return false;
+            }else{
+                q.Enqueue(start);
+                MarkVertex(start);
+                foreach(var edge in vertices[start].edges.Keys){
+                    if(!found){
+                        if(edge == end){
+                            found = true;
+                            q.Enqueue(end);
+                            return true;
+                        }else{
+                            bool result = DFSRecursion(start,end,q);
+                            if(result){
+                                return true;
+                            }
+                        }
+                    }
+                    
+                }
+                return false;
+                
+            } 
         }
 
         public void BreadthFirstSearch(string start, string end, Queue<string> q)

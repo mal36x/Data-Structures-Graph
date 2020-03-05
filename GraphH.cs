@@ -6,24 +6,29 @@ namespace Graph
 
     class EdgeNode
     {
-        VertexNode destination;
-        int weight;
-        EdgeNode nextEdge;
+        public VertexNode Destination;
+        public int Weight;
 
-
+        public EdgeNode(VertexNode d, int w){
+            Destination = d;
+            Weight = w;
+        }
     }
 
     class VertexNode
     {
-        string vname;
-        bool mark;
-        EdgeNode edgePtr;
-        VertexNode nextVertex;
+        public string vname;
+        public bool mark;
+        public Dictionary<string,EdgeNode> edges = new Dictionary<string, EdgeNode>();
+        
+        public VertexNode(string v){
+            vname = v;
+        }
     }
 
     class Graph
     {
-        VertexNode vertices;
+        Dictionary<string,VertexNode> vertices = new Dictionary<string, VertexNode>();
 
         public Graph()
         {
@@ -33,56 +38,71 @@ namespace Graph
 
         void AddVertex(string v)
         {
-
+            vertices.Add(v, new VertexNode(v));
         }
 
         public void AddEdge(string s, string d, int w)
         {
-
+            vertices[s].edges.Add(d, new EdgeNode(vertices[d],w));
         }
 
         public void MarkVertex(string v)
         {
-
+            vertices[v].mark = true;
         }
 
         public void ClearMarks()
         {
-
+            foreach(string key in vertices.Keys){
+                vertices[key].mark = false;
+            }
         }
 
         public bool IsMarked(string vertex)
         {
-            return true;
+            return  vertices[vertex].mark;
         }
 
         public bool VertexExists(string v)
         {
 
-            return true;
+            return vertices.ContainsKey(v);
         }
 
         public void GetToVertices(string v, Queue<string> q)
         {
+            foreach(string key in vertices[v].edges.Keys){
+                q.Enqueue(key);
+            }
 
         }
 
         public bool EdgeExists(string s, string d)
         {
 
-            return true;
+           return vertices[s].edges.ContainsKey(d);
         }
 
         public int WeightIs(string s, string d)
         {
 
-            return 0;
+            return vertices[s].edges[d].Weight;
 
         }
 
         public void Print()
         {
-
+            Console.WriteLine("*******************************");
+            Console.WriteLine("Vertex: Adjecent Vertices");
+            Console.WriteLine("------------------------------");
+            foreach(string vertexKey in vertices.Keys){
+                string output = vertexKey+" : ";
+                foreach(string edgeKey in vertices[vertexKey].edges.Keys){
+                    output +=edgeKey +" ";
+                }
+                Console.WriteLine(output);
+            }
+            Console.WriteLine("*******************************");
         }
 
         public void DepthFirstSearch(string start, string end, Queue<string> q)
@@ -91,6 +111,7 @@ namespace Graph
 
         public void BreadthFirstSearch(string start, string end, Queue<string> q)
         {
+
         }
     }
 

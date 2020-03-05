@@ -26,7 +26,7 @@ namespace Graph
         }
     }
 
-    class Graph
+    public class Graph
     {
         Dictionary<string,VertexNode> vertices = new Dictionary<string, VertexNode>();
 
